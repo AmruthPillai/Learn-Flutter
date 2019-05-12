@@ -5,7 +5,7 @@ import 'package:learn_flutter/products.dart';
 class ProductManager extends StatefulWidget {
   final String startingProduct;
 
-  ProductManager(this.startingProduct) {
+  ProductManager({this.startingProduct = 'Sweets Tester'}) {
     print('[ProductManager Widget] Constructor');
   }
 
@@ -46,7 +46,9 @@ class _ProductManagerState extends State<ProductManager> {
           },
         ),
       ),
-      Products(_products)
+      Products(
+        products: _products,
+      ),
     ]);
   }
 }
