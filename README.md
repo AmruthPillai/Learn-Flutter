@@ -1,6 +1,6 @@
-# learn_flutter
+# Learn Flutter
 
-A new Flutter project.
+A new Flutter project to learn... Flutter, duh!
 
 ## Getting Started
 
