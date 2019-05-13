@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:learn_flutter/product_control.dart';
-
 import 'package:learn_flutter/products.dart';
 
 class ProductManager extends StatefulWidget {
