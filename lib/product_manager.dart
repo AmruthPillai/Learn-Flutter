@@ -3,7 +3,7 @@ import 'package:learn_flutter/product_control.dart';
 import 'package:learn_flutter/products.dart';
 
 class ProductManager extends StatefulWidget {
-  final String startingProduct;
+  final Map<String, String> startingProduct;
 
   ProductManager({this.startingProduct}) {
     print('[ProductManager Widget] Constructor');
@@ -17,7 +17,7 @@ class ProductManager extends StatefulWidget {
 }
 
 class _ProductManagerState extends State<ProductManager> {
-  final List<String> _products = [];
+  final List<Map<String, String>> _products = [];
 
   @override
   void initState() {
@@ -34,8 +34,12 @@ class _ProductManagerState extends State<ProductManager> {
     print('[ProductManager State] didUpdateWidget()');
   }
 
-  void _addProduct(String product) {
+  void _addProduct(Map<String, String> product) {
     setState(() => _products.add(product));
+  }
+
+  void _deleteProduct(int index) {
+    setState(() => _products.removeAt(index));
   }
 
   @override
@@ -47,7 +51,7 @@ class _ProductManagerState extends State<ProductManager> {
         child: ProductControl(_addProduct),
       ),
       Expanded(
-        child: Products(products: _products),
+        child: Products(products: _products, deleteProduct: _deleteProduct),
       )
     ]);
   }
