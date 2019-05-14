@@ -41,16 +41,21 @@ class _MyAppState extends State<MyApp> {
 
         if (pathElements[1] == 'product') {
           final int index = int.parse(pathElements[2]);
-          return MaterialPageRoute<bool>(
-            builder: (BuildContext context) => ProductPage(_products[index]),
-          );
+          return MaterialPageRoute<bool>(builder: (BuildContext context) {
+            return ProductPage(
+              index,
+              _products[index],
+              _deleteProduct,
+            );
+          });
         }
 
         return null;
       },
       onUnknownRoute: (RouteSettings settings) {
-        return MaterialPageRoute(
-            builder: (BuildContext context) => ProductsPage(_products));
+        return MaterialPageRoute(builder: (BuildContext context) {
+          return ProductsPage(_products);
+        });
       },
     );
   }

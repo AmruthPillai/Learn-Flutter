@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:learn_flutter/widgets/products/product_title.dart';
+import 'package:learn_flutter/widgets/ui_elements/product_title.dart';
 
 class ProductPage extends StatelessWidget {
+  final int index;
   final Map<String, dynamic> product;
+  final Function deleteProduct;
 
-  ProductPage(this.product);
+  ProductPage(this.index, this.product, this.deleteProduct);
 
   _showWarningDialog(BuildContext context) {
     showDialog(
@@ -23,11 +25,22 @@ class ProductPage extends StatelessWidget {
                   child: Text('Continue'),
                   onPressed: () {
                     Navigator.pop(context);
+                    deleteProduct(index);
                     Navigator.pop(context, true);
                   })
             ],
           );
         });
+  }
+
+  Widget _buildAddressPriceRow() {
+    return Text(
+      'Union Square, San Francisco | \$' + product['price'].toString(),
+      style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Oswald',
+          color: Colors.grey),
+    );
   }
 
   @override
@@ -54,13 +67,7 @@ class ProductPage extends StatelessWidget {
             SizedBox(height: 10.0),
             ProductTitle(product['title']),
             SizedBox(height: 4.0),
-            Text(
-              'Union Square, San Francisco | \$' + product['price'].toString(),
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Oswald',
-                  color: Colors.grey),
-            ),
+            _buildAddressPriceRow(),
             SizedBox(height: 12.0),
             Text(product['description'])
           ],
