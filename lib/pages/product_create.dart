@@ -10,47 +10,69 @@ class ProductCreatePage extends StatefulWidget {
 }
 
 class _ProductCreatePageState extends State<ProductCreatePage> {
-  String _titleValue;
-  String _descriptionValue;
-  double _priceValue;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  _buildTitleTextField() {
-    return TextField(
+  final Map<String, dynamic> _formData = {
+    'title': null,
+    'description': null,
+    'price': null,
+    'image': 'assets/food.jpg',
+  };
+
+  Widget _buildTitleTextField() {
+    return TextFormField(
       decoration: InputDecoration(labelText: 'Product Title'),
-      onChanged: (String value) => setState(() => _titleValue = value),
+      keyboardType: TextInputType.text,
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Title is required!';
+        } else if (value.length < 5) {
+          return 'Title must be at least 5 characters long.';
+        }
+      },
+      onSaved: (String value) => _formData['title'] = value,
     );
   }
 
-  _buildDescriptionTextField() {
-    return TextField(
+  Widget _buildDescriptionTextField() {
+    return TextFormField(
       maxLines: 4,
       decoration: InputDecoration(labelText: 'Product Description'),
       keyboardType: TextInputType.multiline,
-      onChanged: (String value) => setState(() => _descriptionValue = value),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Description is required!';
+        } else if (value.length < 10) {
+          return 'Description must be at least 10 characters long.';
+        }
+      },
+      onSaved: (String value) => _formData['description'] = value,
     );
   }
 
-  _buildPriceTextField() {
-    return TextField(
+  Widget _buildPriceTextField() {
+    return TextFormField(
       decoration: InputDecoration(labelText: 'Product Price'),
       keyboardType: TextInputType.number,
-      onChanged: (String value) =>
-          setState(() => _priceValue = double.parse(value)),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Price is required!';
+        } else if (!RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
+          return 'Price must be a valid number.';
+        }
+      },
+      onSaved: (String value) => _formData['price'] = double.parse(value),
     );
   }
 
-  _submitForm() {
-    final Map<String, dynamic> product = {
-      'title': _titleValue,
-      'description': _descriptionValue,
-      'price': _priceValue,
-      'image': 'assets/food.jpg',
-    };
-    widget.addProduct(product);
+  void _submitForm() {
+    if (!_formKey.currentState.validate()) return;
+    _formKey.currentState.save();
+    widget.addProduct(_formData);
     Navigator.pushReplacementNamed(context, '/products');
   }
 
-  _buildProductCreateButton() {
+  Widget _buildProductCreateButton() {
     return RaisedButton(
       child: Text('Save'),
       onPressed: _submitForm,
@@ -66,17 +88,25 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
 
     return Container(
       margin: EdgeInsets.all(10.0),
-      child: ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: targetPadding / 2,
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: EdgeInsets.symmetric(
+              horizontal: targetPadding / 2,
+            ),
+            children: <Widget>[
+              _buildTitleTextField(),
+              _buildDescriptionTextField(),
+              _buildPriceTextField(),
+              SizedBox(height: 10.0),
+              _buildProductCreateButton()
+            ],
+          ),
         ),
-        children: <Widget>[
-          _buildTitleTextField(),
-          _buildDescriptionTextField(),
-          _buildPriceTextField(),
-          SizedBox(height: 10.0),
-          _buildProductCreateButton()
-        ],
       ),
     );
   }
