@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
-class ProductCreatePage extends StatefulWidget {
+class ProductEditPage extends StatefulWidget {
+  final int index;
+  final Map<String, dynamic> product;
   final Function addProduct;
+  final Function updateProduct;
 
-  const ProductCreatePage(this.addProduct);
+  const ProductEditPage(
+      {this.index, this.product, this.addProduct, this.updateProduct});
 
   @override
-  _ProductCreatePageState createState() => _ProductCreatePageState();
+  _ProductEditPageState createState() => _ProductEditPageState();
 }
 
-class _ProductCreatePageState extends State<ProductCreatePage> {
+class _ProductEditPageState extends State<ProductEditPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final Map<String, dynamic> _formData = {
@@ -21,6 +25,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
 
   Widget _buildTitleTextField() {
     return TextFormField(
+      initialValue: (widget.product == null) ? '' : widget.product['title'],
       decoration: InputDecoration(labelText: 'Product Title'),
       keyboardType: TextInputType.text,
       validator: (String value) {
@@ -37,6 +42,8 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
   Widget _buildDescriptionTextField() {
     return TextFormField(
       maxLines: 4,
+      initialValue:
+          (widget.product == null) ? '' : widget.product['description'],
       decoration: InputDecoration(labelText: 'Product Description'),
       keyboardType: TextInputType.multiline,
       validator: (String value) {
@@ -52,6 +59,8 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
 
   Widget _buildPriceTextField() {
     return TextFormField(
+      initialValue:
+          (widget.product == null) ? '' : widget.product['price'].toString(),
       decoration: InputDecoration(labelText: 'Product Price'),
       keyboardType: TextInputType.number,
       validator: (String value) {
@@ -68,7 +77,11 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
   void _submitForm() {
     if (!_formKey.currentState.validate()) return;
     _formKey.currentState.save();
-    widget.addProduct(_formData);
+    if (widget.product == null) {
+      widget.addProduct(_formData);
+    } else {
+      widget.updateProduct(widget.index, _formData);
+    }
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -86,7 +99,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
         (deviceWidth > 550.0) ? 500.0 : deviceWidth * 0.95;
     final double targetPadding = deviceWidth - targetWidth;
 
-    return Container(
+    final Widget pageContent = Container(
       margin: EdgeInsets.all(10.0),
       child: GestureDetector(
         onTap: () {
@@ -109,5 +122,14 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
         ),
       ),
     );
+
+    return (widget.product == null)
+        ? pageContent
+        : Scaffold(
+            appBar: AppBar(
+              title: Text('Edit Product'),
+            ),
+            body: pageContent,
+          );
   }
 }
