@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learn_flutter/widgets/products/price_tag.dart';
+import 'package:learn_flutter/widgets/products/product_title.dart';
 
 class Products extends StatelessWidget {
   final List<Map<String, dynamic>> products;
@@ -19,33 +21,11 @@ class Products extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Expanded(
-                  flex: 4,
-                  child: Text(
-                    products[index]['title'],
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Oswald',
-                    ),
-                  ),
-                ),
+                    flex: 4, child: ProductTitle(products[index]['title'])),
                 Expanded(
                   flex: 1,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 6.0,
-                      vertical: 4.0,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: Theme.of(context).accentColor,
-                    ),
-                    child: Center(
-                      child: Text(
-                        '\$' + products[index]['price'].toString(),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+                  child: PriceTag(
+                    products[index]['price'].toString(),
                   ),
                 )
               ],

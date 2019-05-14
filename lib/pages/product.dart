@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:learn_flutter/widgets/products/product_title.dart';
 
 class ProductPage extends StatelessWidget {
-  final String title;
-  final String imageUrl;
+  final Map<String, dynamic> product;
 
-  ProductPage(this.title, this.imageUrl);
+  ProductPage(this.product);
 
   _showWarningDialog(BuildContext context) {
     showDialog(
@@ -33,30 +33,39 @@ class ProductPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () {
-          print('Back button pressed!');
-          Navigator.pop(context, false);
-          return Future.value(false);
-        },
-        child: Scaffold(
-          appBar: AppBar(title: Text(title)),
-          body: Column(
-            children: <Widget>[
-              Image.asset(imageUrl),
-              Container(
-                padding: EdgeInsets.all(10.0),
-                child: Text(title),
-              ),
-              Container(
-                padding: EdgeInsets.all(10.0),
-                child: RaisedButton(
-                  color: Theme.of(context).accentColor,
-                  child: Text('DELETE'),
-                  onPressed: () => _showWarningDialog(context),
-                ),
-              )
-            ],
-          ),
-        ));
+      onWillPop: () {
+        print('Back button pressed!');
+        Navigator.pop(context, false);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(product['title']),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () => _showWarningDialog(context),
+            )
+          ],
+        ),
+        body: Column(
+          children: <Widget>[
+            Image.asset(product['image']),
+            SizedBox(height: 10.0),
+            ProductTitle(product['title']),
+            SizedBox(height: 4.0),
+            Text(
+              'Union Square, San Francisco | \$' + product['price'].toString(),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Oswald',
+                  color: Colors.grey),
+            ),
+            SizedBox(height: 12.0),
+            Text(product['description'])
+          ],
+        ),
+      ),
+    );
   }
 }

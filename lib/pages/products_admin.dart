@@ -4,9 +4,8 @@ import 'package:learn_flutter/pages/product_list.dart';
 
 class ProductsAdminPage extends StatelessWidget {
   final Function addProduct;
-  final Function deleteProduct;
 
-  const ProductsAdminPage(this.addProduct, this.deleteProduct);
+  const ProductsAdminPage(this.addProduct);
 
   @override
   Widget build(BuildContext context) {
