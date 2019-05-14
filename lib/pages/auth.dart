@@ -13,38 +13,65 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Login')),
-        body: Column(
-          children: <Widget>[
-            TextField(
-              decoration: InputDecoration(labelText: 'Email Address'),
-              keyboardType: TextInputType.emailAddress,
-              onChanged: (String v) => setState(() => _emailValue = v),
+      appBar: AppBar(title: Text('Login')),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/background.jpg'),
+              colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.5),
+                BlendMode.dstATop,
+              )),
+        ),
+        padding: EdgeInsets.all(15.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Card(
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 20.0,
+                ),
+                child: Column(
+                  children: <Widget>[
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Email Address'),
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (String v) => setState(() => _emailValue = v),
+                    ),
+                    SizedBox(height: 20.0),
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Password'),
+                      obscureText: true,
+                      onChanged: (String v) =>
+                          setState(() => _passwordValue = v),
+                    ),
+                    SizedBox(height: 10.0),
+                    SwitchListTile(
+                      title: Text('Accept Terms'),
+                      value: _acceptTerms,
+                      onChanged: (bool value) =>
+                          setState(() => _acceptTerms = value),
+                    ),
+                    SizedBox(height: 10.0),
+                    RaisedButton(
+                      color: Theme.of(context).primaryColor,
+                      textColor: Colors.white,
+                      child: Text('Login'),
+                      onPressed: () {
+                        print(_emailValue);
+                        print(_passwordValue);
+                        Navigator.pushReplacementNamed(context, '/products');
+                      },
+                    )
+                  ],
+                ),
+              ),
             ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-              onChanged: (String v) => setState(() => _passwordValue = v),
-            ),
-            SwitchListTile(
-              title: Text('Accept Terms'),
-              value: _acceptTerms,
-              onChanged: (bool value) => setState(() => _acceptTerms = value),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            RaisedButton(
-              color: Theme.of(context).primaryColor,
-              textColor: Colors.white,
-              child: Text('Login'),
-              onPressed: () {
-                print(_emailValue);
-                print(_passwordValue);
-                Navigator.pushReplacementNamed(context, '/products');
-              },
-            )
-          ],
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }
