@@ -39,7 +39,13 @@ class _AuthPageState extends State<AuthPage> {
 
   Widget _buildAcceptTermsSwitch() {
     return SwitchListTile(
-      title: Text('Accept Terms'),
+      title: Text(
+        'Accept Terms & Conditions',
+        style: TextStyle(
+          fontSize: 12.0,
+          color: Colors.grey,
+        ),
+      ),
       value: _acceptTerms,
       onChanged: (bool value) => setState(() => _acceptTerms = value),
     );
@@ -53,8 +59,6 @@ class _AuthPageState extends State<AuthPage> {
 
   Widget _buildLoginButton() {
     return RaisedButton(
-      color: Theme.of(context).primaryColor,
-      textColor: Colors.white,
       child: Text('Login'),
       onPressed: _submitForm,
     );
@@ -78,11 +82,11 @@ class _AuthPageState extends State<AuthPage> {
                 child: Column(
                   children: <Widget>[
                     _buildEmailTextField(),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 10.0),
                     _buildPasswordTextField(),
-                    SizedBox(height: 10.0),
+                    SizedBox(height: 5.0),
                     _buildAcceptTermsSwitch(),
-                    SizedBox(height: 10.0),
+                    SizedBox(height: 5.0),
                     _buildLoginButton()
                   ],
                 ),
