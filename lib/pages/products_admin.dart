@@ -1,17 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:learn_flutter/models/product.dart';
 import 'package:learn_flutter/pages/product_edit.dart';
 import 'package:learn_flutter/pages/product_list.dart';
 
 class ProductsAdminPage extends StatelessWidget {
-  final List<Product> products;
-  final Function addProduct;
-  final Function updateProduct;
-  final Function deleteProduct;
-
-  const ProductsAdminPage(
-      this.products, this.addProduct, this.updateProduct, this.deleteProduct);
-
   Widget _buildSideDrawer(BuildContext context) {
     return Drawer(
       child: Column(
@@ -55,8 +46,8 @@ class ProductsAdminPage extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-              ProductEditPage(addProduct: addProduct),
-              ProductListPage(products, updateProduct, deleteProduct)
+              ProductEditPage(),
+              ProductListPage(),
             ],
           )),
     );

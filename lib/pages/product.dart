@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:learn_flutter/models/product.dart';
+import 'package:learn_flutter/scoped_models/products.dart';
 import 'package:learn_flutter/widgets/ui_elements/product_title.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ProductPage extends StatelessWidget {
   final int index;
-  final Product product;
-  final Function deleteProduct;
 
-  ProductPage(this.index, this.product, this.deleteProduct);
+  ProductPage(this.index);
 
   _showWarningDialog(BuildContext context) {
     showDialog(
@@ -26,7 +26,6 @@ class ProductPage extends StatelessWidget {
                   child: Text('Continue'),
                   onPressed: () {
                     Navigator.pop(context);
-                    deleteProduct(index);
                     Navigator.pop(context, true);
                   })
             ],
@@ -34,9 +33,9 @@ class ProductPage extends StatelessWidget {
         });
   }
 
-  Widget _buildAddressPriceRow() {
+  Widget _buildAddressPriceRow(double price) {
     return Text(
-      'Union Square, San Francisco | \$' + product.price.toString(),
+      'Union Square, San Francisco | \$' + price.toString(),
       style: TextStyle(
           fontWeight: FontWeight.bold,
           fontFamily: 'Oswald',
@@ -46,13 +45,14 @@ class ProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        print('Back button pressed!');
-        Navigator.pop(context, false);
-        return Future.value(false);
-      },
-      child: Scaffold(
+    return WillPopScope(onWillPop: () {
+      print('Back button pressed!');
+      Navigator.pop(context, false);
+      return Future.value(false);
+    }, child: ScopedModelDescendant<ProductsModel>(
+        builder: (BuildContext context, Widget child, ProductsModel model) {
+      final Product product = model.products[index];
+      return Scaffold(
         appBar: AppBar(
           title: Text(product.title),
           actions: <Widget>[
@@ -68,12 +68,12 @@ class ProductPage extends StatelessWidget {
             SizedBox(height: 10.0),
             ProductTitle(product.title),
             SizedBox(height: 4.0),
-            _buildAddressPriceRow(),
+            _buildAddressPriceRow(product.price),
             SizedBox(height: 12.0),
             Text(product.description)
           ],
         ),
-      ),
-    );
+      );
+    }));
   }
 }

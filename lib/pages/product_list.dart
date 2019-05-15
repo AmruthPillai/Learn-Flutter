@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:learn_flutter/models/product.dart';
 import 'package:learn_flutter/pages/product_edit.dart';
+import 'package:learn_flutter/scoped_models/products.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ProductListPage extends StatelessWidget {
-  final List<Product> products;
-  final Function updateProduct;
-  final Function deleteProduct;
-
-  ProductListPage(this.products, this.updateProduct, this.deleteProduct);
-
   Widget _buildDismissDeleteBackground() {
     return Container(
       color: Colors.red,
@@ -31,60 +27,65 @@ class ProductListPage extends StatelessWidget {
     );
   }
 
-  Widget _buildProductImage(int index) {
+  Widget _buildProductImage(Product product) {
     return CircleAvatar(
-      backgroundImage: AssetImage(products[index].image),
+      backgroundImage: AssetImage(product.image),
     );
   }
 
-  Widget _buildEditButton(BuildContext context, int index) {
+  Widget _buildEditButton(
+      BuildContext context, int index, ProductsModel model) {
     return IconButton(
       icon: Icon(Icons.edit),
-      onPressed: () => _editProduct(context, index),
+      onPressed: () {
+        model.selectProduct(index);
+
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return ProductEditPage();
+            },
+          ),
+        );
+      },
     );
   }
 
-  ListTile _buildProductListTile(BuildContext context, int index) {
+  ListTile _buildProductListTile(
+      BuildContext context, int index, ProductsModel model) {
+    final Product product = model.products[index];
     return ListTile(
-      leading: _buildProductImage(index),
-      title: Text(products[index].title),
-      subtitle: Text('\$' + products[index].price.toString()),
-      trailing: _buildEditButton(context, index),
-    );
-  }
-
-  void _editProduct(BuildContext context, int index) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return ProductEditPage(
-            index: index,
-            product: products[index],
-            updateProduct: updateProduct,
-          );
-        },
-      ),
+      leading: _buildProductImage(product),
+      title: Text(product.title),
+      subtitle: Text('\$' + product.price.toString()),
+      trailing: _buildEditButton(context, index, model),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return Dismissible(
-          direction: DismissDirection.endToStart,
-          key: Key(index.toString()),
-          background: _buildDismissDeleteBackground(),
-          onDismissed: (DismissDirection direction) => deleteProduct(index),
-          child: Column(
-            children: <Widget>[
-              _buildProductListTile(context, index),
-              Divider(),
-            ],
-          ),
+    return ScopedModelDescendant<ProductsModel>(
+      builder: (BuildContext context, Widget child, ProductsModel model) {
+        return ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            model.selectProduct(index);
+            return Dismissible(
+              direction: DismissDirection.endToStart,
+              key: Key(index.toString()),
+              background: _buildDismissDeleteBackground(),
+              onDismissed: (DismissDirection direction) =>
+                  model.deleteProduct(),
+              child: Column(
+                children: <Widget>[
+                  _buildProductListTile(context, index, model),
+                  Divider(),
+                ],
+              ),
+            );
+          },
+          itemCount: model.products.length,
         );
       },
-      itemCount: products.length,
     );
   }
 }
