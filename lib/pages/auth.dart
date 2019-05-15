@@ -32,6 +32,9 @@ class _AuthPageState extends State<AuthPage> {
       validator: (String value) {
         if (value.isEmpty) {
           return 'Email Address is required!';
+        } else if (!RegExp(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$')
+            .hasMatch(value)) {
+          return 'This does not seem to be a valid email address.';
         }
       },
       textInputAction: TextInputAction.next,
@@ -46,6 +49,8 @@ class _AuthPageState extends State<AuthPage> {
       validator: (String value) {
         if (value.isEmpty) {
           return 'Password is required!';
+        } else if (value.length < 6) {
+          return 'The password seems to be less than 6 characters.';
         }
       },
       textInputAction: TextInputAction.done,
