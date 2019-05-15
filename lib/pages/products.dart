@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learn_flutter/product_manager.dart';
+import 'package:learn_flutter/scoped_models/products.dart';
 
 class ProductsPage extends StatelessWidget {
   Widget _buildSideDrawer(BuildContext context) {
@@ -30,8 +31,12 @@ class ProductsPage extends StatelessWidget {
         title: Text('EasyList'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.favorite),
-            onPressed: () {},
+            icon: Icon(ProductsModel.of(context).showFavorites
+                ? Icons.favorite
+                : Icons.favorite_border),
+            onPressed: () {
+              ProductsModel.of(context).toggleDisplayMode();
+            },
           ),
         ],
       ),

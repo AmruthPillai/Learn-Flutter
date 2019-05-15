@@ -4,6 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 class ProductsModel extends Model {
   int _selectedProductIndex;
+  bool _showFavorites = false;
   final List<Product> _products = [];
 
   static ProductsModel of(BuildContext context) =>
@@ -11,6 +12,12 @@ class ProductsModel extends Model {
 
   List<Product> get products => List.from(_products);
   int get selectedProductIndex => _selectedProductIndex;
+  bool get showFavorites => _showFavorites;
+  List<Product> get displayedProducts {
+    return (_showFavorites)
+        ? _products.where((Product product) => product.isFavorite).toList()
+        : List.from(_products);
+  }
 
   Product get selectedProduct {
     return (_selectedProductIndex == null)
@@ -41,11 +48,16 @@ class ProductsModel extends Model {
       price: selectedProduct.price,
       isFavorite: !selectedProduct.isFavorite,
     ));
-
     notifyListeners();
   }
 
   void selectProduct(int index) {
     _selectedProductIndex = index;
+    notifyListeners();
+  }
+
+  void toggleDisplayMode() {
+    _showFavorites = !_showFavorites;
+    notifyListeners();
   }
 }
