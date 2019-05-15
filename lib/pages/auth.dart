@@ -6,9 +6,13 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  String _emailValue;
-  String _passwordValue;
-  bool _acceptTerms = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final Map<String, dynamic> _formData = {
+    'email': null,
+    'password': null,
+    'accept_terms': false
+  };
 
   DecorationImage _buildBackgroundImage() {
     return DecorationImage(
@@ -22,18 +26,30 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   Widget _buildEmailTextField() {
-    return TextField(
+    return TextFormField(
       decoration: InputDecoration(labelText: 'Email Address'),
       keyboardType: TextInputType.emailAddress,
-      onChanged: (String v) => setState(() => _emailValue = v),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Email Address is required!';
+        }
+      },
+      textInputAction: TextInputAction.next,
+      onSaved: (String v) => _formData['email'] = v,
     );
   }
 
   Widget _buildPasswordTextField() {
-    return TextField(
+    return TextFormField(
       decoration: InputDecoration(labelText: 'Password'),
       obscureText: true,
-      onChanged: (String v) => setState(() => _passwordValue = v),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Password is required!';
+        }
+      },
+      textInputAction: TextInputAction.done,
+      onSaved: (String v) => _formData['password'] = v,
     );
   }
 
@@ -46,14 +62,16 @@ class _AuthPageState extends State<AuthPage> {
           color: Colors.grey,
         ),
       ),
-      value: _acceptTerms,
-      onChanged: (bool value) => setState(() => _acceptTerms = value),
+      value: _formData['accept_terms'],
+      onChanged: (bool value) =>
+          setState(() => _formData['accept_terms'] = value),
     );
   }
 
   void _submitForm() {
-    print(_emailValue);
-    print(_passwordValue);
+    if (!_formKey.currentState.validate()) return;
+    _formKey.currentState.save();
+    print(_formData);
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -79,16 +97,19 @@ class _AuthPageState extends State<AuthPage> {
                   horizontal: 20.0,
                   vertical: 20.0,
                 ),
-                child: Column(
-                  children: <Widget>[
-                    _buildEmailTextField(),
-                    SizedBox(height: 10.0),
-                    _buildPasswordTextField(),
-                    SizedBox(height: 5.0),
-                    _buildAcceptTermsSwitch(),
-                    SizedBox(height: 5.0),
-                    _buildLoginButton()
-                  ],
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      _buildEmailTextField(),
+                      SizedBox(height: 10.0),
+                      _buildPasswordTextField(),
+                      SizedBox(height: 5.0),
+                      _buildAcceptTermsSwitch(),
+                      SizedBox(height: 5.0),
+                      _buildLoginButton()
+                    ],
+                  ),
                 ),
               ),
             ),

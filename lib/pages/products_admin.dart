@@ -6,8 +6,10 @@ class ProductsAdminPage extends StatelessWidget {
   final List<Map<String, dynamic>> products;
   final Function addProduct;
   final Function updateProduct;
+  final Function deleteProduct;
 
-  const ProductsAdminPage(this.products, this.addProduct, this.updateProduct);
+  const ProductsAdminPage(
+      this.products, this.addProduct, this.updateProduct, this.deleteProduct);
 
   Widget _buildSideDrawer(BuildContext context) {
     return Drawer(
@@ -53,7 +55,7 @@ class ProductsAdminPage extends StatelessWidget {
           body: TabBarView(
             children: <Widget>[
               ProductEditPage(addProduct: addProduct),
-              ProductListPage(products, updateProduct)
+              ProductListPage(products, updateProduct, deleteProduct)
             ],
           )),
     );
