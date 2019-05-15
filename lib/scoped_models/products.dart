@@ -25,12 +25,23 @@ class ProductsModel extends Model {
 
   void updateProduct(Product product) {
     _products[_selectedProductIndex] = product;
+    print(_products[_selectedProductIndex].isFavorite);
     _selectedProductIndex = null;
   }
 
   void deleteProduct() {
     _products.removeAt(_selectedProductIndex);
     _selectedProductIndex = null;
+  }
+
+  void toggleFavorite() {
+    updateProduct(Product(
+      title: selectedProduct.title,
+      description: selectedProduct.description,
+      image: selectedProduct.image,
+      price: selectedProduct.price,
+      isFavorite: !selectedProduct.isFavorite,
+    ));
   }
 
   void selectProduct(int index) {

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:learn_flutter/models/product.dart';
+import 'package:learn_flutter/scoped_models/products.dart';
 import 'package:learn_flutter/widgets/products/address_box.dart';
 import 'package:learn_flutter/widgets/products/price_tag.dart';
 import 'package:learn_flutter/widgets/ui_elements/product_title.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
-  final int productIndex;
+  final int index;
 
-  ProductCard(this.product, this.productIndex);
+  ProductCard(this.product, this.index);
 
   Widget _buildTitlePriceRow() {
     return Container(
@@ -43,14 +44,17 @@ class ProductCard extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed<bool>(
               context,
-              '/product/' + productIndex.toString(),
+              '/product/' + index.toString(),
             );
           },
         ),
         IconButton(
           icon: Icon(Icons.favorite_border),
           color: Colors.red,
-          onPressed: () => {},
+          onPressed: () {
+            ProductsModel.of(context).selectProduct(index);
+            ProductsModel.of(context).toggleFavorite();
+          },
         ),
       ],
     );
