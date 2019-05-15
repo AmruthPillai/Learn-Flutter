@@ -25,6 +25,8 @@ class ProductPage extends StatelessWidget {
                   child: Text('Continue'),
                   onPressed: () {
                     Navigator.pop(context);
+                    ProductsModel.of(context).selectProduct(index);
+                    ProductsModel.of(context).deleteProduct();
                     Navigator.pop(context, true);
                   })
             ],
