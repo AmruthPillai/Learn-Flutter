@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:learn_flutter/models/product.dart';
 import 'package:learn_flutter/widgets/ui_elements/product_title.dart';
 
 class ProductPage extends StatelessWidget {
   final int index;
-  final Map<String, dynamic> product;
+  final Product product;
   final Function deleteProduct;
 
   ProductPage(this.index, this.product, this.deleteProduct);
@@ -35,7 +36,7 @@ class ProductPage extends StatelessWidget {
 
   Widget _buildAddressPriceRow() {
     return Text(
-      'Union Square, San Francisco | \$' + product['price'].toString(),
+      'Union Square, San Francisco | \$' + product.price.toString(),
       style: TextStyle(
           fontWeight: FontWeight.bold,
           fontFamily: 'Oswald',
@@ -53,7 +54,7 @@ class ProductPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(product['title']),
+          title: Text(product.title),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.delete),
@@ -63,13 +64,13 @@ class ProductPage extends StatelessWidget {
         ),
         body: Column(
           children: <Widget>[
-            Image.asset(product['image']),
+            Image.asset(product.image),
             SizedBox(height: 10.0),
-            ProductTitle(product['title']),
+            ProductTitle(product.title),
             SizedBox(height: 4.0),
             _buildAddressPriceRow(),
             SizedBox(height: 12.0),
-            Text(product['description'])
+            Text(product.description)
           ],
         ),
       ),

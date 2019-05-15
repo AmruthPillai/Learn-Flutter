@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:learn_flutter/models/product.dart';
 import 'package:learn_flutter/pages/product_edit.dart';
 
 class ProductListPage extends StatelessWidget {
-  final List<Map<String, dynamic>> products;
+  final List<Product> products;
   final Function updateProduct;
   final Function deleteProduct;
 
@@ -32,7 +33,7 @@ class ProductListPage extends StatelessWidget {
 
   Widget _buildProductImage(int index) {
     return CircleAvatar(
-      backgroundImage: AssetImage(products[index]['image']),
+      backgroundImage: AssetImage(products[index].image),
     );
   }
 
@@ -46,8 +47,8 @@ class ProductListPage extends StatelessWidget {
   ListTile _buildProductListTile(BuildContext context, int index) {
     return ListTile(
       leading: _buildProductImage(index),
-      title: Text(products[index]['title']),
-      subtitle: Text('\$' + products[index]['price'].toString()),
+      title: Text(products[index].title),
+      subtitle: Text('\$' + products[index].price.toString()),
       trailing: _buildEditButton(context, index),
     );
   }
