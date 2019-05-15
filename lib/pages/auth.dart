@@ -71,7 +71,6 @@ class _AuthPageState extends State<AuthPage> {
   void _submitForm() {
     if (!_formKey.currentState.validate()) return;
     _formKey.currentState.save();
-    print(_formData);
     Navigator.pushReplacementNamed(context, '/products');
   }
 

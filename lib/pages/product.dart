@@ -50,7 +50,6 @@ class ProductPage extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () {
-        print('Back button pressed!');
         Navigator.pop(context, false);
         return Future.value(false);
       },

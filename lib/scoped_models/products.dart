@@ -25,7 +25,6 @@ class ProductsModel extends Model {
 
   void updateProduct(Product product) {
     _products[_selectedProductIndex] = product;
-    print(_products[_selectedProductIndex].isFavorite);
     _selectedProductIndex = null;
   }
 
