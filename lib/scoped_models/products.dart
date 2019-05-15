@@ -7,7 +7,7 @@ class ProductsModel extends Model {
   final List<Product> _products = [];
 
   static ProductsModel of(BuildContext context) =>
-      ScopedModel.of<ProductsModel>(context);
+      ScopedModel.of<ProductsModel>(context, rebuildOnChange: true);
 
   List<Product> get products => List.from(_products);
   int get selectedProductIndex => _selectedProductIndex;
@@ -42,6 +42,8 @@ class ProductsModel extends Model {
       price: selectedProduct.price,
       isFavorite: !selectedProduct.isFavorite,
     ));
+
+    notifyListeners();
   }
 
   void selectProduct(int index) {
