@@ -78,7 +78,7 @@ class ProductListPage extends StatelessWidget {
           ),
         );
       },
-      itemCount: ProductsModel.of(context).products.length,
+      itemCount: ProductsModel.of(context).allProducts.length,
     );
   }
 }

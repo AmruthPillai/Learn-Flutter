@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learn_flutter/scoped_models/user.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -76,6 +77,7 @@ class _AuthPageState extends State<AuthPage> {
   void _submitForm() {
     if (!_formKey.currentState.validate()) return;
     _formKey.currentState.save();
+    UserModel.of(context).login(_formData['email'], _formData['password']);
     Navigator.pushReplacementNamed(context, '/products');
   }
 

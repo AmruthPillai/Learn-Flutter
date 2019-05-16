@@ -74,21 +74,17 @@ class _ProductEditPageState extends State<ProductEditPage> {
     _formKey.currentState.save();
     if (ProductsModel.of(context).selectedProductIndex == null) {
       ProductsModel.of(context).addProduct(
-        Product(
-          title: _formData['title'],
-          description: _formData['description'],
-          price: _formData['price'],
-          image: _formData['image'],
-        ),
+        _formData['title'],
+        _formData['description'],
+        _formData['image'],
+        _formData['price'],
       );
     } else {
       ProductsModel.of(context).updateProduct(
-        Product(
-          title: _formData['title'],
-          description: _formData['description'],
-          price: _formData['price'],
-          image: _formData['image'],
-        ),
+        _formData['title'],
+        _formData['description'],
+        _formData['image'],
+        _formData['price'],
       );
     }
     Navigator.pushReplacementNamed(context, '/products');

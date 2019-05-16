@@ -51,6 +51,7 @@ class ProductPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () {
         Navigator.pop(context, false);
+        ProductsModel.of(context).selProductIndex = null;
         return Future.value(false);
       },
       child: Scaffold(
