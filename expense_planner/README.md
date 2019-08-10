@@ -1,6 +1,6 @@
-# expense_planner
+# Personal Expenses Planner
 
-A new Flutter project.
+<img src="https://user-images.githubusercontent.com/1134738/62817911-33165e00-bb5c-11e9-9988-d70f595d9504.png" width="200px" />&nbsp;&nbsp;<img src="https://user-images.githubusercontent.com/1134738/62817909-327dc780-bb5c-11e9-951a-9ac746a405a5.png" width="200px" />&nbsp;&nbsp;<img src="https://user-images.githubusercontent.com/1134738/62817908-327dc780-bb5c-11e9-8a0a-dc2e1db34e12.png" width="200px" />
 
 ## Getting Started
 
