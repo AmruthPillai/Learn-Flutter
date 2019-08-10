@@ -37,6 +37,7 @@ class _AuthPageState extends State<AuthPage> {
             .hasMatch(value)) {
           return 'This does not seem to be a valid email address.';
         }
+        return '';
       },
       textInputAction: TextInputAction.next,
       onSaved: (String v) => _formData['email'] = v,
@@ -53,6 +54,7 @@ class _AuthPageState extends State<AuthPage> {
         } else if (value.length < 6) {
           return 'The password seems to be less than 6 characters.';
         }
+        return '';
       },
       textInputAction: TextInputAction.done,
       onSaved: (String v) => _formData['password'] = v,

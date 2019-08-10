@@ -28,6 +28,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         } else if (value.length < 5) {
           return 'Title must be at least 5 characters long.';
         }
+        return '';
       },
       textInputAction: TextInputAction.next,
       onSaved: (String value) => _formData['title'] = value,
@@ -46,6 +47,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         } else if (value.length < 10) {
           return 'Description must be at least 10 characters long.';
         }
+        return '';
       },
       textInputAction: TextInputAction.next,
       onSaved: (String value) => _formData['description'] = value,
@@ -63,6 +65,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         } else if (!RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
           return 'Price must be a valid number.';
         }
+        return '';
       },
       textInputAction: TextInputAction.done,
       onSaved: (String value) => _formData['price'] = double.parse(value),
