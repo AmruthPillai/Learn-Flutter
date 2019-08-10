@@ -19,10 +19,6 @@ class _CategoryMealsPageState extends State<CategoryMealsPage> {
   List<Meal> meals;
   bool _loadedData = false;
 
-  void _removeMeal(String mealId) {
-    meals.removeWhere((meal) => meal.id == mealId);
-  }
-
   @override
   void didChangeDependencies() {
     if (!_loadedData) {
