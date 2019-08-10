@@ -36,8 +36,9 @@ class TransactionList extends StatelessWidget {
             )
           : ListView.builder(
               itemBuilder: (ctx, index) => TransactionTile(
-                transactions[index],
-                _deleteTransaction,
+                key: ValueKey(transactions[index].id),
+                txn: transactions[index],
+                deleteTransaction: _deleteTransaction,
               ),
               itemCount: transactions.length,
             ),

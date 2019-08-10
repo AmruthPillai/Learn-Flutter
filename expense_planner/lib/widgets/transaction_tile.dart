@@ -2,15 +2,22 @@ import 'package:expense_planner/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TransactionTile extends StatelessWidget {
+class TransactionTile extends StatefulWidget {
   final Transaction txn;
-  final Function _deleteTransaction;
+  final Function deleteTransaction;
 
-  const TransactionTile(this.txn, this._deleteTransaction);
+  const TransactionTile({Key key, this.txn, this.deleteTransaction})
+      : super(key: key);
 
+  @override
+  _TransactionTileState createState() => _TransactionTileState();
+}
+
+class _TransactionTileState extends State<TransactionTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      key: widget.key,
       child: Row(
         children: <Widget>[
           Container(
@@ -21,7 +28,7 @@ class TransactionTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
-              '\$${txn.amount.toStringAsFixed(2)}',
+              '\$${widget.txn.amount.toStringAsFixed(2)}',
               style: TextStyle(
                 fontSize: 24,
                 color: Colors.white,
@@ -33,7 +40,7 @@ class TransactionTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                txn.title,
+                widget.txn.title,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -41,7 +48,7 @@ class TransactionTile extends StatelessWidget {
               ),
               SizedBox(height: 4),
               Text(
-                DateFormat().format(txn.timestamp),
+                DateFormat().format(widget.txn.timestamp),
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.black54,
@@ -55,7 +62,7 @@ class TransactionTile extends StatelessWidget {
             iconSize: 18,
             color: Colors.black54,
             onPressed: () {
-              _deleteTransaction(txn.id);
+              widget.deleteTransaction(widget.txn.id);
             },
           ),
         ],
