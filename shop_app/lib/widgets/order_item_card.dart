@@ -24,18 +24,16 @@ class _OrderItemCardState extends State<OrderItemCard> {
         child: Column(
           children: <Widget>[
             ListTile(
+              onTap: () {
+                setState(() {
+                  _expanded = !_expanded;
+                });
+              },
               title: Text('\$${widget.item.amount.toStringAsFixed(2)}'),
               subtitle: Text(
                 DateFormat.yMMMMd().add_jm().format(widget.item.dateTime),
               ),
-              trailing: IconButton(
-                onPressed: () {
-                  setState(() {
-                    _expanded = !_expanded;
-                  });
-                },
-                icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
-              ),
+              trailing: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
             ),
             _expanded
                 ? Container(
