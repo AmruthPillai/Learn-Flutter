@@ -50,23 +50,58 @@ class CartPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 5),
-            FlatButton(
-              textColor: Theme.of(context).primaryColor,
-              onPressed: () {
-                Provider.of<Orders>(context, listen: false)
-                    .addOrder(cartItems, cartStore.totalCartValue);
-                cartStore.clearCart();
-              },
-              child: Text(
-                'ORDER NOW',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            OrderButton(cartStore: cartStore, cartItems: cartItems),
           ],
         ),
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key key,
+    @required this.cartStore,
+    @required this.cartItems,
+  }) : super(key: key);
+
+  final Cart cartStore;
+  final List<CartItem> cartItems;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      textColor: Theme.of(context).primaryColor,
+      onPressed: widget.cartStore.itemCount <= 0
+          ? null
+          : () async {
+              setState(() => _isLoading = true);
+              await Provider.of<Orders>(context, listen: false)
+                  .addOrder(widget.cartItems, widget.cartStore.totalCartValue);
+              setState(() => _isLoading = false);
+              widget.cartStore.clearCart();
+            },
+      child: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).primaryColor,
+                ),
+              ),
+            )
+          : Text(
+              'ORDER NOW',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
     );
   }
 }

@@ -9,16 +9,38 @@ class OrdersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ordersStore = Provider.of<Orders>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Orders'),
       ),
       drawer: MainDrawer(),
-      body: ListView.builder(
-        itemCount: ordersStore.orders.length,
-        itemBuilder: (ctx, idx) => OrderItemCard(ordersStore.orders[idx]),
+      body: FutureBuilder(
+        future: Provider.of<Orders>(context, listen: false).fetchOrders(),
+        builder: (ctx, dataSnapshot) {
+          if (dataSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: new AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).primaryColor,
+                ),
+              ),
+            );
+          } else {
+            if (dataSnapshot.hasError) {
+              return Center(
+                child: Text('An Error has Occured!'),
+              );
+            } else {
+              return Consumer<Orders>(
+                builder: (ctx, ordersStore, child) => ListView.builder(
+                  itemCount: ordersStore.orders.length,
+                  itemBuilder: (ctx, idx) =>
+                      OrderItemCard(ordersStore.orders[idx]),
+                ),
+              );
+            }
+          }
+        },
       ),
     );
   }
