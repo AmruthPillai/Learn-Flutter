@@ -19,12 +19,40 @@ class CartItemCard extends StatelessWidget {
         direction: DismissDirection.horizontal,
         movementDuration: Duration(milliseconds: 100),
         confirmDismiss: (direction) async {
+          var result = false;
+
           if (direction == DismissDirection.startToEnd) {
             increaseQty(item.product);
           } else if (direction == DismissDirection.endToStart) {
+            if (item.quantity == 1) {
+              return showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: Text('Are you sure?'),
+                  content:
+                      Text('Do you want to remove the item from the cart?'),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                      child: Text('No'),
+                    ),
+                    FlatButton(
+                      onPressed: () {
+                        decreaseQty(item.product);
+                        Navigator.of(context).pop(true);
+                      },
+                      child: Text('Yes'),
+                    ),
+                  ],
+                ),
+              );
+            }
             decreaseQty(item.product);
           }
-          return false;
+
+          return result;
         },
         background: _buildIncreaseDismissBackground(),
         secondaryBackground: _buildDecreaseDismissBackground(),
