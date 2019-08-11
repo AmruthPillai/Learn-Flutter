@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/pages/auth.dart';
 import 'package:shop_app/pages/cart.dart';
 import 'package:shop_app/pages/edit_product_page.dart';
 import 'package:shop_app/pages/orders.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: ProductOverviewPage(),
+        home: AuthPage(),
         routes: {
           ProductOverviewPage.routeName: (ctx) => ProductOverviewPage(),
           ProductDetailPage.routeName: (ctx) => ProductDetailPage(),
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
           EditProductPage.routeName: (ctx) => EditProductPage(),
           OrdersPage.routeName: (ctx) => OrdersPage(),
           CartPage.routeName: (ctx) => CartPage(),
+          AuthPage.routeName: (ctx) => AuthPage(),
         },
       ),
     );

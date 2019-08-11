@@ -38,7 +38,8 @@ class Products with ChangeNotifier {
       _items = products;
       notifyListeners();
     } catch (e) {
-      throw e;
+      // throw e;
+      print(e);
     }
   }
 
