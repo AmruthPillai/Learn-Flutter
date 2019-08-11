@@ -20,21 +20,7 @@ class ProductOverviewPage extends StatefulWidget {
 }
 
 class _ProductOverviewPageState extends State<ProductOverviewPage> {
-  var _isInit = true;
-  var _isLoading = false;
   var _showOnlyFavorites = false;
-
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      _isLoading = true;
-      Provider.of<Products>(context)
-          .fetchProducts()
-          .then((_) => _isLoading = false);
-      _isInit = false;
-    }
-    super.didChangeDependencies();
-  }
 
   Future<void> _refreshProducts(context) async {
     await Provider.of<Products>(context).fetchProducts();
@@ -86,17 +72,29 @@ class _ProductOverviewPageState extends State<ProductOverviewPage> {
         ),
       ),
       drawer: MainDrawer(),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(
+      body: FutureBuilder(
+        future: Provider.of<Products>(context, listen: false).fetchProducts(),
+        builder: (ctx, dataSnapshot) {
+          if (dataSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+                child: CircularProgressIndicator(
               valueColor: new AlwaysStoppedAnimation<Color>(
                 Theme.of(context).primaryColor,
               ),
-            ))
-          : RefreshIndicator(
+            ));
+          } else {
+            if (dataSnapshot.hasError) {
+              return Center(
+                child: Text('Something went wrong!'),
+              );
+            }
+            return RefreshIndicator(
               onRefresh: () => _refreshProducts(context),
               child: ProductsGrid(_showOnlyFavorites),
-            ),
+            );
+          }
+        },
+      ),
     );
   }
 }

@@ -21,7 +21,10 @@ class Products with ChangeNotifier {
       final response = await http.get(url);
       final data = json.decode(response.body) as Map<String, dynamic>;
       final List<Product> products = [];
+
       if (data == null) return;
+      if (data['error'].isNotEmpty) throw data['error'];
+
       data.forEach((id, product) {
         products.add(Product(
           id: id,
@@ -35,7 +38,6 @@ class Products with ChangeNotifier {
       _items = products;
       notifyListeners();
     } catch (e) {
-      print(e);
       throw e;
     }
   }
