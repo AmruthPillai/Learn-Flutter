@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:great_places_app/providers/great_places.dart';
 import 'package:great_places_app/screens/add_place.dart';
-import 'package:great_places_app/screens/place_detail.dart';
+import 'package:great_places_app/screens/place_detail_screen.dart';
 import 'package:great_places_app/screens/places_list.dart';
 import 'package:provider/provider.dart';
 

@@ -6,7 +6,7 @@ import 'package:great_places_app/models/location.dart';
 class Place {
   final String id;
   final String title;
-  final Location location;
+  final PlaceLocation location;
   final File image;
 
   Place({

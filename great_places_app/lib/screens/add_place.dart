@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:great_places_app/models/location.dart';
 import 'package:great_places_app/providers/great_places.dart';
+import 'package:great_places_app/widgets/location_input.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as syspath;
@@ -16,8 +18,8 @@ class AddPlaceScreen extends StatefulWidget {
 
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
   final _titleController = TextEditingController();
-
   File _storedImage;
+  PlaceLocation _pickedLocation;
 
   Future<void> _takePicture() async {
     final file = await ImagePicker.pickImage(
@@ -26,18 +28,24 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     );
 
     if (file == null) return;
-
     final appDir = await syspath.getApplicationDocumentsDirectory();
     final filename = path.basename(file.path);
     final image = await file.copy('${appDir.path}/$filename');
-
     setState(() => _storedImage = image);
   }
 
+  void _selectPlace(double latitude, double longitude) {
+    setState(() {
+      _pickedLocation = PlaceLocation(latitude: latitude, longitude: longitude);
+    });
+  }
+
   void _savePlace() {
-    if (_titleController.text.isEmpty || _storedImage == null) return;
+    if (_titleController.text.isEmpty ||
+        _storedImage == null ||
+        _pickedLocation == null) return;
     Provider.of<GreatPlaces>(context, listen: false)
-        .addPlace(_titleController.text, _storedImage);
+        .addPlace(_titleController.text, _storedImage, _pickedLocation);
 
     Navigator.of(context).pop();
   }
@@ -84,6 +92,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                               onPressed: _takePicture,
                             ),
                           ),
+                    SizedBox(height: 20),
+                    LocationInput(_selectPlace),
                   ],
                 ),
               ),
