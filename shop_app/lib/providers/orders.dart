@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/cart.dart';
-import 'package:shop_app/providers/product.dart';
 import 'package:shop_app/providers/products.dart';
 
 class OrderItem {
