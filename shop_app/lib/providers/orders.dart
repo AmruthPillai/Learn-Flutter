@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/providers/products.dart';
 
@@ -25,7 +26,8 @@ class Orders with ChangeNotifier {
   List<OrderItem> get orders => [..._orders];
 
   Future<void> fetchOrders() async {
-    final String url = 'https://flutter-shopify.firebaseio.com/orders.json';
+    final url =
+        'https://flutter-shopify.firebaseio.com/orders.json?auth=${Auth.token}';
     final response = await http.get(url);
     final data = json.decode(response.body) as Map<String, dynamic>;
     final List<OrderItem> orders = [];
@@ -49,7 +51,8 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> addOrder(List<CartItem> items, double amount) async {
-    final String url = 'https://flutter-shopify.firebaseio.com/orders.json';
+    final url =
+        'https://flutter-shopify.firebaseio.com/orders.json?auth=${Auth.token}';
     final timestamp = DateTime.now();
 
     final response = await http.post(

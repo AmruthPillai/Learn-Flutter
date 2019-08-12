@@ -8,15 +8,17 @@ import 'package:shop_app/widgets/user_product_card.dart';
 class UserProductsPage extends StatelessWidget {
   static const String routeName = '/user-products';
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   Future<void> _refreshProducts(context) async {
     await Provider.of<Products>(context).fetchProducts();
   }
 
-  Future<void> _deleteProduct(context, productsStore, index) async {
+  Future<void> _deleteProduct(productsStore, index) async {
     try {
       await productsStore.deleteProduct(productsStore.items[index].id);
     } catch (e) {
-      Scaffold.of(context).showSnackBar(
+      _scaffoldKey.currentState.showSnackBar(
         SnackBar(
           content: Text(
             'Something went wrong!',
@@ -30,10 +32,9 @@ class UserProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productsStore = Provider.of<Products>(context);
-    final _scaffold = GlobalKey();
 
     return Scaffold(
-      key: _scaffold,
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Manage Products'),
         actions: <Widget>[
@@ -58,8 +59,7 @@ class UserProductsPage extends StatelessWidget {
                     productsStore.items[idx].id,
                     productsStore.items[idx].title,
                     productsStore.items[idx].imageUrl,
-                    () => _deleteProduct(
-                        _scaffold.currentContext, productsStore, idx),
+                    () => _deleteProduct(productsStore, idx),
                   ),
                 ),
                 Divider(),

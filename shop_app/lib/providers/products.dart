@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/product.dart';
 
 class Products with ChangeNotifier {
@@ -15,7 +16,8 @@ class Products with ChangeNotifier {
   Product findById(String id) => _items.firstWhere((item) => item.id == id);
 
   Future<void> fetchProducts() async {
-    const String url = 'https://flutter-shopify.firebaseio.com/products.json';
+    final url =
+        'https://flutter-shopify.firebaseio.com/products.json?auth=${Auth.token}';
 
     try {
       final response = await http.get(url);
@@ -23,7 +25,7 @@ class Products with ChangeNotifier {
       final List<Product> products = [];
 
       if (data == null) return;
-      if (data['error'].isNotEmpty) throw data['error'];
+      if (data['error'] != null) throw data['error'];
 
       data.forEach((id, product) {
         products.add(Product(
@@ -44,7 +46,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const String url = 'https://flutter-shopify.firebaseio.com/products.json';
+    final url =
+        'https://flutter-shopify.firebaseio.com/products.json?auth=${Auth.token}';
 
     try {
       final response = await http.post(
@@ -79,8 +82,8 @@ class Products with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
 
     if (prodIndex >= 0) {
-      final String url =
-          'https://flutter-shopify.firebaseio.com/products/$id.json';
+      final url =
+          'https://flutter-shopify.firebaseio.com/products/$id.json?auth=${Auth.token}';
       await http.patch(
         url,
         body: json.encode({
@@ -97,8 +100,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final String url =
-        'https://flutter-shopify.firebaseio.com/products/$id.json';
+    final url =
+        'https://flutter-shopify.firebaseio.com/products/$id.json?auth=${Auth.token}';
     final index = _items.indexWhere((prod) => prod.id == id);
     var product = _items[index];
     _items.removeAt(index);
