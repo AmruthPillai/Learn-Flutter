@@ -59,11 +59,15 @@ class CartItemCard extends StatelessWidget {
         child: Card(
           child: Row(
             children: <Widget>[
-              Image.network(
-                item.product.imageUrl,
-                width: 90,
-                height: 100,
-                fit: BoxFit.cover,
+              Hero(
+                tag: item.product.id,
+                child: FadeInImage(
+                  placeholder: AssetImage('assets/images/placeholder.png'),
+                  width: 90,
+                  height: 100,
+                  image: NetworkImage(item.product.imageUrl),
+                  fit: BoxFit.cover,
+                ),
               ),
               SizedBox(width: 10),
               Column(

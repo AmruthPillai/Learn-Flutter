@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/cart.dart';
+import 'package:shop_app/providers/product.dart';
 import 'package:shop_app/providers/products.dart';
 
 class OrderItem {
@@ -32,6 +33,9 @@ class Orders with ChangeNotifier {
     final data = json.decode(response.body) as Map<String, dynamic>;
     final List<OrderItem> orders = [];
     if (data == null) return;
+
+    await Products().fetchProducts();
+
     data.forEach((id, order) {
       orders.add(OrderItem(
         id: id,

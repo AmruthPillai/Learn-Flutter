@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/widgets/loading_spinner.dart';
 
 class SignupCard extends StatefulWidget {
   final Function toggleMode;
@@ -120,14 +121,7 @@ class _SignupCardState extends State<SignupCard> {
                         _isLoading
                             ? Padding(
                                 padding: const EdgeInsets.all(10),
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    valueColor:
-                                        new AlwaysStoppedAnimation<Color>(
-                                      Theme.of(context).primaryColor,
-                                    ),
-                                  ),
-                                ),
+                                child: LoadingSpinner(),
                               )
                             : FlatButton(
                                 onPressed: () => _onSave(context),

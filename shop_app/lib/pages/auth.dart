@@ -11,13 +11,16 @@ class AuthPage extends StatefulWidget {
   _AuthPageState createState() => _AuthPageState();
 }
 
-class _AuthPageState extends State<AuthPage> {
+class _AuthPageState extends State<AuthPage>
+    with SingleTickerProviderStateMixin {
   var _isInLoginMode = true;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  void _toggleAuthMode() {
-    setState(() => _isInLoginMode = !_isInLoginMode);
+  void _toggleAuthMode() async {
+    setState(() {
+      _isInLoginMode = !_isInLoginMode;
+    });
   }
 
   Future<void> _authenticate(String email, String password) async {
@@ -81,15 +84,20 @@ class _AuthPageState extends State<AuthPage> {
               ),
             ),
             SizedBox(height: 20),
-            _isInLoginMode
-                ? LoginCard(
-                    _toggleAuthMode,
-                    _authenticate,
-                  )
-                : SignupCard(
-                    _toggleAuthMode,
-                    _authenticate,
-                  ),
+            AnimatedCrossFade(
+              firstChild: LoginCard(
+                _toggleAuthMode,
+                _authenticate,
+              ),
+              secondChild: SignupCard(
+                _toggleAuthMode,
+                _authenticate,
+              ),
+              duration: const Duration(milliseconds: 200),
+              crossFadeState: _isInLoginMode
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
+            ),
           ],
         ),
       ),

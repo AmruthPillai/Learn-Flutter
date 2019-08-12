@@ -4,6 +4,7 @@ import 'package:shop_app/pages/cart.dart';
 import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/providers/products.dart';
 import 'package:shop_app/widgets/badge.dart';
+import 'package:shop_app/widgets/loading_spinner.dart';
 import 'package:shop_app/widgets/main_drawer.dart';
 import 'package:shop_app/widgets/products_grid.dart';
 
@@ -76,12 +77,7 @@ class _ProductOverviewPageState extends State<ProductOverviewPage> {
         future: Provider.of<Products>(context, listen: false).fetchProducts(),
         builder: (ctx, dataSnapshot) {
           if (dataSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-                child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(
-                Theme.of(context).primaryColor,
-              ),
-            ));
+            return LoadingSpinner();
           } else {
             if (dataSnapshot.hasError) {
               return Center(

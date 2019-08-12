@@ -12,8 +12,12 @@ class UserProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(imageUrl),
+      leading: FadeInImage(
+        placeholder: AssetImage('assets/images/placeholder.png'),
+        width: 50,
+        height: 50,
+        image: NetworkImage(imageUrl),
+        fit: BoxFit.cover,
       ),
       title: Text(title),
       trailing: Container(

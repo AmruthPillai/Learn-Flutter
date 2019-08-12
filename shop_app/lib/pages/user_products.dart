@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/pages/edit_product_page.dart';
 import 'package:shop_app/providers/products.dart';
+import 'package:shop_app/widgets/loading_spinner.dart';
 import 'package:shop_app/widgets/main_drawer.dart';
 import 'package:shop_app/widgets/user_product_card.dart';
 
@@ -47,14 +48,8 @@ class UserProductsPage extends StatelessWidget {
       body: FutureBuilder<Object>(
         future: _refreshProducts(context),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-                child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(
-                Theme.of(context).primaryColor,
-              ),
-            ));
-          }
+          if (snapshot.connectionState == ConnectionState.waiting)
+            return LoadingSpinner();
           return RefreshIndicator(
             onRefresh: () => _refreshProducts(context),
             child: Padding(

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/providers/orders.dart';
 import 'package:shop_app/widgets/cart_item_card.dart';
+import 'package:shop_app/widgets/loading_spinner.dart';
 
 class CartPage extends StatelessWidget {
   static const String routeName = '/cart';
@@ -89,13 +90,7 @@ class _OrderButtonState extends State<OrderButton> {
               widget.cartStore.clearCart();
             },
       child: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                valueColor: new AlwaysStoppedAnimation<Color>(
-                  Theme.of(context).primaryColor,
-                ),
-              ),
-            )
+          ? LoadingSpinner()
           : Text(
               'ORDER NOW',
               style: TextStyle(
