@@ -27,14 +27,12 @@ class Product with ChangeNotifier {
     notifyListeners();
 
     final url =
-        'https://flutter-shopify.firebaseio.com/products/$id.json?auth=${Auth.token}';
+        'https://flutter-shopify.firebaseio.com/userFavorites/${Auth.userId}/$id.json?auth=${Auth.token}';
 
     try {
-      final response = await http.patch(
+      final response = await http.put(
         url,
-        body: json.encode({
-          'isFavorite': isFavorite,
-        }),
+        body: json.encode(isFavorite),
       );
       if (response.statusCode >= 400) throw 'Error';
     } catch (e) {

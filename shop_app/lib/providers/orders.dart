@@ -27,7 +27,7 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchOrders() async {
     final url =
-        'https://flutter-shopify.firebaseio.com/orders.json?auth=${Auth.token}';
+        'https://flutter-shopify.firebaseio.com/orders/${Auth.userId}.json?auth=${Auth.token}';
     final response = await http.get(url);
     final data = json.decode(response.body) as Map<String, dynamic>;
     final List<OrderItem> orders = [];
@@ -52,7 +52,7 @@ class Orders with ChangeNotifier {
 
   Future<void> addOrder(List<CartItem> items, double amount) async {
     final url =
-        'https://flutter-shopify.firebaseio.com/orders.json?auth=${Auth.token}';
+        'https://flutter-shopify.firebaseio.com/orders/${Auth.userId}.json?auth=${Auth.token}';
     final timestamp = DateTime.now();
 
     final response = await http.post(

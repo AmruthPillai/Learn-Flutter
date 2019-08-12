@@ -6,6 +6,7 @@ import 'package:shop_app/pages/edit_product_page.dart';
 import 'package:shop_app/pages/orders.dart';
 import 'package:shop_app/pages/product_detail.dart';
 import 'package:shop_app/pages/product_overview.dart';
+import 'package:shop_app/pages/splash.dart';
 import 'package:shop_app/pages/user_products.dart';
 import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/cart.dart';
@@ -41,7 +42,16 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          home: auth.isAuth ? ProductOverviewPage() : AuthPage(),
+          home: auth.isAuth
+              ? ProductOverviewPage()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, snapshot) {
+                    return (snapshot.connectionState == ConnectionState.waiting)
+                        ? SplashScreen()
+                        : AuthPage();
+                  },
+                ),
           routes: {
             ProductOverviewPage.routeName: (ctx) => ProductOverviewPage(),
             ProductDetailPage.routeName: (ctx) => ProductDetailPage(),

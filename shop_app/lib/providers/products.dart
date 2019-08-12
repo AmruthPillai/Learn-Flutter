@@ -15,9 +15,11 @@ class Products with ChangeNotifier {
 
   Product findById(String id) => _items.firstWhere((item) => item.id == id);
 
-  Future<void> fetchProducts() async {
-    final url =
-        'https://flutter-shopify.firebaseio.com/products.json?auth=${Auth.token}';
+  Future<void> fetchProducts([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? '&orderBy="creatorId"&equalTo="${Auth.userId}"' : '';
+    var url =
+        'https://flutter-shopify.firebaseio.com/products.json?auth=${Auth.token}$filterString';
 
     try {
       final response = await http.get(url);
@@ -27,6 +29,11 @@ class Products with ChangeNotifier {
       if (data == null) return;
       if (data['error'] != null) throw data['error'];
 
+      url =
+          'https://flutter-shopify.firebaseio.com/userFavorites/${Auth.userId}.json?auth=${Auth.token}';
+      final favoriteResponse = await http.get(url);
+      final favoriteData = json.decode(favoriteResponse.body);
+
       data.forEach((id, product) {
         products.add(Product(
           id: id,
@@ -34,7 +41,7 @@ class Products with ChangeNotifier {
           description: product['description'],
           price: product['price'],
           imageUrl: product['imageUrl'],
-          isFavorite: product['isFavorite'],
+          isFavorite: favoriteData == null ? false : favoriteData[id] ?? false,
         ));
       });
       _items = products;
@@ -57,7 +64,7 @@ class Products with ChangeNotifier {
           'description': product.description,
           'price': product.price,
           'imageUrl': product.imageUrl,
-          'isFavorite': product.isFavorite,
+          'creatorId': Auth.userId,
         }),
       );
 
